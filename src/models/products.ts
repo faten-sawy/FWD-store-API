@@ -28,4 +28,11 @@ export class Products {
         conn.release()
         return result.rows[0]
     }
+    async delete(id:number):Promise<Product>{
+        const conn = await client.connect()
+        const sql = 'DELETE FROM products WHERE id=($1)'
+        const result = await conn.query(sql,[id])
+        conn.release()
+        return result.rows[0]
+    }
 }

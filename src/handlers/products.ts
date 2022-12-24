@@ -1,6 +1,6 @@
 import express,{Request,Response}  from "express";
 import { Products,Product } from "../models/products";
-
+import { authMiddleware } from "../middlewares/auth";
 const store = new Products
 
 const index = async (req:Request,res:Response)=>{
@@ -8,8 +8,8 @@ const index = async (req:Request,res:Response)=>{
     res.json(productsResult)
 }
 const show = async (req:Request,res:Response) => {
-    const { id } = req.body
-    const productResult = await store.show(id)
+    const { id } = req.params
+    const productResult = await store.show(Number(id))
     res.json(productResult)
 }
 const create = async (req:Request,res:Response) => {
@@ -21,11 +21,17 @@ const create = async (req:Request,res:Response) => {
     const newProduct = await store.create(product)
     res.json(newProduct)
 }
+const deleteProduct = async (req:Request,res:Response) => {
+    const {id} = req.body
+    const deletedItem = await store.delete(id)
+    res.json(deletedItem);
+}
 
 const productsRoutes = (app:express.Application) =>{
     app.get("/products",index)
     app.get("/products/:id",show)
-    app.post("/product",create)
+    app.post("/product",authMiddleware,create)
+    app.delete("/product",deleteProduct)
 }
 
 export default productsRoutes
