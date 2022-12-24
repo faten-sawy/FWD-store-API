@@ -1,0 +1,1 @@
+CREATE TABLE products (name text, price integer, id SERIAL PRIMARY KEY );

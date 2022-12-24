@@ -1,0 +1,16 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "store",
+    "user": "full_stack_user",
+    "password": "admin"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "store_test",
+    "user": "full_stack_user",
+    "password": "admin"
+  }
+}
