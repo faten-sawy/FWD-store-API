@@ -20,6 +20,7 @@ const create = async (req:Request,res:Response) => {
     }
     const newProduct = await store.create(product)
     res.json(newProduct)
+    console.log(res)
 }
 const deleteProduct = async (req:Request,res:Response) => {
     const {id} = req.body
@@ -27,10 +28,11 @@ const deleteProduct = async (req:Request,res:Response) => {
     res.json(deletedItem);
 }
 
-const productsRoutes = (app:express.Application) =>{
+const productsRoutes = async (app:express.Application) =>{
     app.get("/products",index)
     app.get("/products/:id",show)
     app.post("/product",authMiddleware,create)
+ 
     app.delete("/product",deleteProduct)
 }
 

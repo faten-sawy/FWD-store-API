@@ -2,11 +2,25 @@
 
 ## Getting Started
 
-## run locally 
+## Environment viable  
+    POSTGRES_HOST = 'localhost'
+    POSTGRES_DB = 'store'
+    POSTGRES_TEST_DB = 'store_test'
+    POSTGRES_USER = 'full_stack_user'
+    POSTGRES_PASSWORD = 'admin'
+    ENV = dev
+    database port = 5432
+    server port = 3000
+
+## Run locally 
     1-clone project
     2-install postgres
     3-create database
+        - CREATE USER full_stack_user with password 'admin'
         - CREATE DATABASE store
+        - CREATE DATABASE store_test
+        - GRANT ALL PRIVILEGES ON DATABASE store TO full_stack_user
+        - GRANT ALL PRIVILEGES ON DATABASE store_test TO full_stack_user
     4-npm install
         - npm i
     5- setup database
@@ -16,9 +30,7 @@
     6- run server
         npm run start
 
-## Ports
-    1-database port : 5432
-    2- server port : 3000
+
     
 ## API endpoints
 ### products

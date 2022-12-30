@@ -12,10 +12,7 @@ export const authMiddleware = (
 
         if(token && barrier === 'bearer'){
            const decodeString = jwt.verify(token,'secret')
-           console.log(decodeString)
-
-           if(decodeString) next()
-            
+           if(decodeString) next()   
         }
         else{
             res.json("Error")

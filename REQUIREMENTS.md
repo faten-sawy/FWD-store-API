@@ -5,20 +5,33 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+    1- GET    /products (index)
+    2- GET    /products/:id (show)
+    3- POST   /product (create) (token required)
+    4- DELETE /product (delete)
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+    1- GET  /users (index) (token required)
+    2- POST /user (create) (token required)
+    3- GET  /user/:id (show) (token required)  
+    4- POST /login 
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+    1- GET  /orders (index)
+    2- POST /order (create) (token required)
+    3- GET  /orders/:id (show) 
+    4- POST /orders/:id/products  => that for add product
+
+## Database Schema
+### Table: products (name text, price integer, id SERIAL PRIMARY KEY )
+### Table: users (firstName text, lastName text, password text, id SERIAL PRIMARY KEY)
+### TAble: orders (status text,userId integer REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE ,id SERIAL PRIMARY KEY )
+### Table: order_products (
+    id SERIAL PRIMARY KEY,
+    quantity integer,
+    orderId  integer REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    productId integer REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 ## Data Shapes
 #### Product

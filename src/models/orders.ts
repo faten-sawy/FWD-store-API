@@ -31,8 +31,9 @@ export class Orders {
   }
   async addProduct(quantity:number,orderId:number,productId:number):Promise<Order>{
     const conn = await client.connect()
+    console.log(quantity,orderId,productId)
     const sql =
-      "INSERT INTO order_products(quantity,orderId,productId) VALUES($1,$2,$3) RETURNING *";
+      'INSERT INTO order_products(quantity,orderId,productId) VALUES($1,$2,$3) RETURNING *'
     const result = await conn.query(sql,[quantity,orderId,productId])
     conn.release()
     return result.rows[0]

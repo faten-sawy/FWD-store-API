@@ -22,9 +22,8 @@ const show = async (req:Request,res:Response) =>{
     res.json(orderSelected)
 }
 const addProduct = async (req:Request,res:Response) =>{
-    const {orderId} = req.params
+    const {id:orderId} = req.params
     const {quantity,productId} = req.body
-    console.log(quantity,productId)
     const productAdded = await ordersStore.addProduct(quantity,Number(orderId),productId)
     res.json(productAdded)
 

@@ -14,7 +14,9 @@ const create = async (req:Request,res:Response) =>{
         firstName,lastName,password
     }
     const userResponse = await userStore.create(user)
-    res.json(userResponse)
+    const token = jwt.sign({ userResponse }, "secret");
+    res.json({token})
+    /* console.log(res.json()) */
 }
 
 const show = async (req:Request,res:Response) =>{
@@ -23,7 +25,7 @@ const show = async (req:Request,res:Response) =>{
     res.json(user)
 }
 
-const login = async (req:Request,res:Response) =>{
+/* const login = async (req:Request,res:Response) =>{
 const {firstName,lastName,password} =  req.body
 const user:User ={
     firstName,
@@ -31,17 +33,16 @@ const user:User ={
     password
 }
 const result = await userStore.login(user)
-console.log(result)
 const token = jwt.sign({result},'secret')
 res.json({...result,token})
-}
+} */
 
 
 const userRoutes = (app:express.Application) => {
     app.get('/users',authMiddleware,index)
-    app.post('/user',authMiddleware,create)
+    app.post('/user',create)
     app.get("/user/:id",authMiddleware,show)
-    app.post('/login',login)
+  /*   app.post('/login',login) */
     
 }
 

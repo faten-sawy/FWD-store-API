@@ -22,16 +22,15 @@ export class Users {
         return result.rows
     }
     async create(user:User):Promise<User>{
-      /*   const hashedPass = handleHashPassword(user.password) */
-        const conn = await client.connect()
-        const sql = 'INSERT INTO users(firstName,lastName,password) VALUES($1,$2,$3) RETURNING *'
-        const result = await conn.query(sql, [
-          user.firstName,
-          user.lastName,
-          handleHashPassword(String(user.password)),
-        ]);
-        conn.release()
-        return result.rows[0]
+      const conn = await client.connect()
+      const sql = 'INSERT INTO users(firstName,lastName,password) VALUES($1,$2,$3) RETURNING *'
+      const result = await conn.query(sql, [
+        user.firstName,
+        user.lastName,
+        handleHashPassword(String(user.password)),
+      ]);
+      conn.release()
+      return result.rows[0]
     }
     async show(id:number):Promise<User>{
       const conn = await client.connect()
@@ -40,7 +39,7 @@ export class Users {
       conn.release()
       return result.rows[0];
     }
-    async login(user:User):Promise<User | null>{
+     async login(user:User):Promise<User | null>{
         const conn = await client.connect()    
         const sql = 'SELECT password FROM users WHERE firstName=($1) AND lastName=($2)'
         const result = await conn.query(sql,[user.firstName,user.lastName])
@@ -64,7 +63,7 @@ export class Users {
         conn.release()
        /*  console.log(result.rows[0]) */
         
-    }
+    } 
 
 }
 
