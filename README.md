@@ -27,7 +27,11 @@
         - npm run setup
     6- build project
        - npm run build
-    6- run server
+    7- test project
+        - npm run test
+    8- Formatting, Linting
+        - npm run formatter
+    9- run server
         npm run start
 
 
