@@ -1,6 +1,6 @@
-import { Users, User } from "../users";
-import client from "../../database";
-import { app } from "../../server";
+import { Users, User } from "../models/users";
+import client from "../database";
+import { app } from "../server";
 import supertest from "supertest";
 
 const storeUser = new Users();
@@ -32,7 +32,8 @@ describe("Users Model", () => {
 describe("Test end points", () => {
   beforeAll(async () => {
     const response = await request.post("/user").send(fakeUser);
-    token = response.body;
+    /*  console.info("RESPONSE BODY",response.body.token) */
+    token = response.body.token;
   });
   afterAll(async () => {
     const conn = await client.connect();
@@ -43,19 +44,28 @@ describe("Test end points", () => {
   });
   it("expects create endpoint to add a User", async () => {
     const response = await request.post("/user").send(fakeUser);
-    token = response.body;
     expect(response.status).toEqual(200);
   });
-  it("expects create endpoint to add a User", async () => {
+  it("expects get endpoint to get a Users", async () => {
     const response = await request
       .get("/users")
       .set({ Authorization: `Bearer ${token}` });
-    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([
+      { firstname: "faten", lastname: "sawy", id: 1 },
+      {
+        firstname: "faten",
+        lastname: "sawy",
+        id: 2,
+      },
+    ]);
   });
-  it("expects create endpoint to add a User", async () => {
+  it("expects get endpoint to get a User", async () => {
     const response = await request
       .get("/user/1")
       .set({ Authorization: `Bearer ${token}` });
-    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      firstname: "faten",
+      lastname: "sawy",
+    });
   });
 });

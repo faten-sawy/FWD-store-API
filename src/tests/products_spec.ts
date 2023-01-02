@@ -1,8 +1,8 @@
-import { Product, Products } from "../products";
+import { Product, Products } from "../models/products";
 
 import supertest from "supertest";
-import { app } from "../../server";
-import client from "../../database";
+import { app } from "../server";
+import client from "../database";
 
 const store = new Products();
 const request = supertest(app);
@@ -11,7 +11,6 @@ let token: string;
 /* Test products Model */
 describe("Products Model", () => {
   it("should have an index method", () => {
-    console.log(request);
     expect(store.index).toBeDefined();
   });
 
@@ -44,7 +43,7 @@ describe("test product end point response", () => {
 
   beforeAll(async () => {
     const response = await request.post("/user").send(fakeUser);
-    token = response.body;
+    token = response.body.token;
   });
   afterAll(async () => {
     const conn = await client.connect();
@@ -67,14 +66,24 @@ describe("test product end point response", () => {
       price: 5,
     });
   });
-  it("descripe endpoint response", async () => {
+  it("describe products list", async () => {
     const response = await request
       .get("/products")
       .set({ Authorization: `Bearer ${token}` });
-    expect(response.status).toBe(200);
+    expect(response.body).toEqual([
+      {
+        name: "pen",
+        price: 5,
+        id: 1,
+      },
+    ]);
   });
-  it("descripe endpoint response", async () => {
+  it("describe get product ", async () => {
     const response = await request.get("/products/1");
-    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      name: "pen",
+      price: 5,
+      id: 1,
+    });
   });
 });

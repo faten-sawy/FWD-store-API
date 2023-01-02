@@ -1,23 +1,21 @@
-import { Orders } from "../orders";
-import client from "../../database";
-import { app } from "../../server";
+import Orders from "../models/orders";
+import client from "../database";
+import { app } from "../server";
 import supertest from "supertest";
+import { Products } from "../models/products";
 
 const storeOrder = new Orders();
+const storeProduct = new Products();
 const request = supertest(app);
 let token: string;
-/* let product = {
+const product = {
   name: "pen",
   price: 5,
-}; */
+};
 const user = {
   firstName: "faten",
   lastName: "sawy",
   password: "123",
-};
-const order = {
-  status: "active",
-  userId: 1,
 };
 
 describe("Orders Model", () => {
@@ -43,8 +41,9 @@ describe("Orders Model", () => {
 
 describe("Test end points", () => {
   beforeAll(async () => {
-    const response = await request.post("/users").send(user);
-    token = response.body;
+    await storeProduct.create(product);
+    const response = await request.post("/user").send(user);
+    token = response.body.token;
   });
   afterAll(async () => {
     const conn = await client.connect();
@@ -66,15 +65,47 @@ describe("Test end points", () => {
     const response = await request
       .post("/order")
       .set({ Authorization: `Bearer ${token}` })
-      .send(order);
-    expect(response.status).toBe(200);
+      .send({
+        status: "active",
+        userId: 1,
+      });
+    expect(response.body).toEqual({
+      status: "active",
+      userid: 1,
+      id: 1,
+    });
   });
   it("expects get orders endpoint", async () => {
     const response = await request.get("/orders");
-    expect(response.body).toEqual([]);
+    expect(response.body).toEqual([
+      {
+        status: "active",
+        userid: 1,
+        id: 1,
+      },
+    ]);
   });
   it("expects get order endpoint ", async () => {
     const response = await request.get("/orders/1");
-    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      status: "active",
+      userid: 1,
+      id: 1,
+    });
+  });
+  it("expects add product endpoint to add product the Order", async () => {
+    const response = await request
+      .post("/orders/1/products")
+      .set({ Authorization: `Bearer ${token}` })
+      .send({
+        productId: 1,
+        quantity: 2,
+      });
+    expect(response.body).toEqual({
+      id: 1,
+      quantity: 2,
+      orderid: 1,
+      productid: 1,
+    });
   });
 });
